@@ -1,0 +1,60 @@
+import bcrypt from "bcrypt";
+import User from "../model/User.js";
+import { generateToken } from "../lib/utils.js";
+
+export const signup = async (req, res) => {
+  const { fullName, email, password } = req.body;
+
+  try {
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
+    const validateEmail = (email) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase());
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const newUser = new User({
+      fullName,
+      email: email.toLowerCase(),
+      password: hashedPassword,
+    });
+
+    await newUser.save();
+
+    generateToken(newUser._id, res);
+
+    res.status(201).json({
+      _id: newUser._id,
+      fullName: newUser.fullName,
+      email: newUser.email,
+      profilePic: newUser.profilePic || null,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const signin = (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error.message);
+  }
+};
