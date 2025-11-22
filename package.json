@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/vannovich/VanChat/issues"
   },
-  "homepage": "https://github.com/vannovich/VanChat#readme"
+  "homepage": "https://github.com/vannovich/VanChat#readme",
+  "dependencies": {
+    "resend": "^6.0.2"
+  }
 }
