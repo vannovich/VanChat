@@ -1,11 +1,11 @@
 import express from "express";
 
 import authRoute from './auth.route.js';
-import messageRout from "./message.route.js"
+import messageRoute from "./message.route.js"
 
 const router = express.Router();
 
 router.use("/auth", authRoute);
-router.use("/message", messageRout);
+router.use("/message", messageRoute);
 
 export default router;
