@@ -17,14 +17,14 @@ export const useChartStore = create((set, get) => ({
     set({ isSoundEnabled: !get().isSoundEnabled });
   },
 
-  setActiveTabe: (tab) => set({ activeTab: tab }),
+  setActiveTab: (tab) => set({ activeTab: tab }),
   setSelectedUser: (selectedUser) => set({ selectedUser: selectedUser }),
 
   getAllContacts: async () => {
     set({ isUsersLoading: true });
     try {
       const res = await axiosInstance.get("/message/contacts");
-      set({ allContacts: res.data });
+      set({ allContacts: res.data.contacts });
     } catch (error) {
       const errorMessage = error.response?.data?.message;
       toast.error(errorMessage);
