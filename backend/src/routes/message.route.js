@@ -14,7 +14,8 @@ const router = express.Router();
 // The middleware execute in order - so requests get rate-limited first, then authenticated.
 // This is actually more effiecient since unauthenticated requests get blocked by rate limiting
 //before hitting the middleware.
-router.use(arcjetProtection, protectRoute);
+router.use(protectRoute);
+// arcjetProtection,
 
 // Routes for messages
 router.get("/contacts", getAllContacts);
